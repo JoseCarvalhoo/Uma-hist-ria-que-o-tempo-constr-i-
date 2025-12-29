@@ -6,7 +6,7 @@ var config = {
 "Naquela manhã do dia 28 enquanto segurava sua mão, eu tive a certeza que você era uma pessoa especial.",
 "Uma mulher de coração nobre e com a verdadeira essência feminina.",
 "Garanto que haverá fases melhores para a gente.",      
-"Espero que você goste desta surpresa,",
+"Espero que você goste desta surpresa.",
 "Pois você merece o mundo inteiro!",
 "Com amor, José Osterno.",
     ],
