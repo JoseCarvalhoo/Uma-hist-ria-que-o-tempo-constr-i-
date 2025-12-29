@@ -25,8 +25,8 @@
     </style>
 </head>
 <body>
-<audio id="musica_projeto" loop>
-    <source src="./index_files/music.mp3" type="audio/mp3">
+<audio id="musica_projeto" autoplay="autoplay" loop="loop">
+    <source src="music.mp3" type="audio/mp3">
 </audio>
 
 <img src="https://ajlovechina.github.io/loveBalloon/static/music.png" style="position: fixed;z-index: 10001;top:10px;right:10px;" onclick="let m =document.getElementById('musica_projeto') ; if (m.paused ) {m.play(); this.className = 'rotateImages'} else {m.pause(); this.className = ''}">
