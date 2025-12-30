@@ -1,7 +1,7 @@
 var config = {
     lines: [
 "Para a minha amada Emanuella,",
-"Este é apenas um teste do nosso amor,",
+"A saudade é o jeito que o coração encontra para dizer que o tempo não foi capaz de levar o que é nosso.A cerejeira continua a crescer, e eu continuo a admirar a mulher incrível que você é.",
 "Que cresce a cada segundo,",
 "Naquela manhã do dia 28 enquanto segurava sua mão, eu tive a certeza que você era uma pessoa especial.",
 "Uma mulher de coração nobre e com a verdadeira essência feminina.",
