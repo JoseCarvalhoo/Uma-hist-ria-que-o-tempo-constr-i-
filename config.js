@@ -6,7 +6,7 @@ var config = {
 "O que é real nunca se apaga, apenas se fortalece no silêncio.",      
 "No meio de qualquer tempestade, lembre-se que existe um jardim que construímos juntos. Se o peso do dia cansar, volta aqui. Meu apoio é silencioso, mas é eterno, assim como a nossa história.",        
 "Saiba que nenhuma tempestade dura para sempre. Sigo aqui, guardando o nosso lugar e esperando o tempo florescer novamente",
-"Vou passar meu final de ano aqui nesse jardimzinho, feliz ano novo Manu.🤍",
+"♥️",
 "Com amor, José Osterno.",
     ],
     // Data: 28 de Abril às 10:46
