@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Emanuella</title>
+    <style>
+        body { background: #f0f0f0; font-family: 'Tahoma', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .window { background: #ece9d8; border: 2px solid #0054e3; width: 330px; box-shadow: 5px 5px 15px rgba(0,0,0,0.3); display: none; z-index: 10; }
+        .window-header { background: linear-gradient(to right, #0054e3, #27c1ff); color: white; padding: 5px 10px; font-weight: bold; font-size: 12px; }
+        .window-body { padding: 20px; text-align: center; color: #000; }
+        .btn-container { display: flex; justify-content: center; gap: 15px; margin-top: 15px; position: relative; height: 45px; }
+        button { padding: 5px 15px; border: 1px solid #707070; background: #e1e1e1; cursor: pointer; font-weight: bold; }
+        #btn-sim-fugao { position: absolute; transition: all 0.1s ease; z-index: 100; color: green; }
+        .active { display: block; }
+        .final-gif { width: 100%; border-radius: 8px; margin-top: 10px; border: 2px solid white; }
+        input { width: 80%; padding: 8px; margin: 10px 0; border: 1px solid #7f9db9; text-align: center; }
+        .hint { font-size: 11px; color: #666; font-style: italic; display: block; margin-bottom: 5px; }
+        
+        /* Ajuste para mensagens grandes */
+        #stepFinal { max-height: 85vh; overflow-y: auto; }
+        .mensagem-texto { text-align: left; line-height: 1.6; font-size: 14px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <audio id="musica" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="step1" class="window active">
+        <div class="window-header">Mensagem do Sistema</div>
+        <div class="window-body">
+            <p>VOCÊ É O AMOR DA VIDA DO JOSÉ OSTERNO?</p>
+            <div class="btn-container">
+                <button id="btn-sim-fugao" onmouseover="fuga()" onclick="fuga()">SIM</button>
+                <button onclick="alert('Opção inválida!')">NÃO</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="step2" class="window">
+        <div class="window-header">Identificação</div>
+        <div class="window-body">
+            <input type="text" id="apelido" placeholder="Seu apelido?">
+            <span class="hint">Dica: você é muito amorecuda...</span>
+            <input type="number" id="beleza" placeholder="Nível de beleza (0 a 10)">
+            <button onclick="validar()">VER MEU PRESENTE</button>
+        </div>
+    </div>
+
+    <div id="stepFinal" class="window">
+        <div class="window-header">De: José Osterno | Para: Emanuella ❤️</div>
+        <div class="window-body">
+            
+            <img class="final-gif" src="meugif.gif" onerror="this.src='https://media.giphy.com/media/l4pTdcifP3GDmXgzS/giphy.gif'">
+
+            <div class="mensagem-texto">
+                <p><b>Para meu Amoreco,</b></p>
+
+                <p>Oi Munuzinha, essa mensagem é para te lembrar que indepedente da situação você nunca vai estar só. Jurei te proteger com a minha propria vida assim com a biblia pede</p>
+
+                <p>Escreva aqui o seu segundo parágrafo. Conte histórias ou momentos de vocês dois.</p>
+
+                <p>Pode escrever o quanto quiser. Como configuramos a rolagem, a Emanuella poderá ler tudo arrastando o dedo para cima na janelinha.</p>
+
+                <p style="text-align: center; font-weight: bold; margin-top: 20px;">
+                    Te amo para sempre! <br>
+                    Com todo o meu amor, José Osterno.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let clicks = 0;
+
+        function fuga() {
+            const btn = document.getElementById('btn-sim-fugao');
+            if (clicks < 5) {
+                btn.style.position = 'fixed';
+                btn.style.left = Math.random() * (window.innerWidth - 80) + 'px';
+                btn.style.top = Math.random() * (window.innerHeight - 40) + 'px';
+                clicks++;
+            } else {
+                btn.style.position = 'static';
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+            }
+        }
+
+        function validar() {
+            const ap = document.getElementById('apelido').value.toLowerCase().trim();
+            const bel = document.getElementById('beleza').value;
+
+            if(ap === "amoreco" && bel >= 10) {
+                document.getElementById('step2').style.display = 'none';
+                document.getElementById('stepFinal').style.display = 'block';
+                
+                // Inicia a música music.mp3
+                const som = document.getElementById('musica');
+                som.play().catch(e => console.log("Áudio aguardando clique.")); 
+            } else {
+                alert("Dados incorretos, amoreco!");
+            }
+        }
+    </script>
+</body>
+</html>
