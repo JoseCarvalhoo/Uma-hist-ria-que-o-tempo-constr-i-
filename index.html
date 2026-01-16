@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Emanuella ❤️</title>
+    <style>
+        :root { --cor-primaria: #ff8fa3; --cor-secundaria: #ff4d6d; --cor-fundo: #fff0f5; --cor-texto: #5c2d3a; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--cor-fundo); text-align: center; color: var(--cor-texto); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; position: relative; }
+        
+        .hearts-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .heart { position: absolute; color: var(--cor-primaria); opacity: 0.6; animation: move 10s linear infinite; }
+        @keyframes move { 0% { transform: translateY(100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; } }
+
+        .container { max-width: 380px; width: 85%; background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 30px; border: 2px solid #ffe4e9; box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2); position: relative; max-height: 90vh; overflow-y: auto; }
+        .hidden { display: none; }
+        h2, h3 { color: var(--cor-secundaria); }
+
+        button { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); color: white; border: none; padding: 14px 28px; border-radius: 25px; cursor: pointer; font-size: 16px; margin: 10px; font-weight: bold; transition: 0.3s; }
+        
+        .foto-amor, .gif-final { width: 100%; max-width: 250px; border-radius: 20px; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 15px; }
+
+        .progress-container { width: 100%; background: #fce4ec; border-radius: 20px; height: 25px; margin: 20px 0; overflow: hidden; border: 1px solid #f8bbd0; }
+        #progressFill { width: 0%; height: 100%; background: linear-gradient(90deg, #ff4d6d, #ff8fa3); transition: width 0.4s ease; }
+
+        .letter-btn { background: #fff; color: var(--cor-secundaria); border: 2px solid var(--cor-primaria); padding: 10px 15px; border-radius: 12px; cursor: pointer; display: inline-block; margin: 5px; }
+
+        .wheel-outer { position: relative; width: 260px; height: 260px; margin: 20px auto; }
+        #wheel { width: 100%; height: 100%; border-radius: 50%; border: 6px solid white; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); }
+        .pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid var(--cor-secundaria); z-index: 10; }
+
+        #finalMessage { text-align: left; margin: 15px 0; padding: 15px; background: #ffe4e9; border-radius: 15px; font-size: 0.95em; color: var(--cor-texto); border: 1px solid var(--cor-primaria); line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <div class="hearts-bg" id="hearts-bg"></div>
+
+    <audio id="musica">
+        <source src="musica_fundo.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container" id="step1">
+        <span>🌸 ✨ 🌸</span>
+        <h2>Oi Emanuella!</h2>
+        <p>Preparei algo especial para você...</p>
+        <button onclick="nextStep(2)">Começar ❤️</button>
+    </div>
+
+    <div class="container hidden" id="step2">
+        <h3>Você ainda ama a gente? 🥺</h3>
+        <button onclick="nextStep(3)">Com toda certeza! ;)</button>
+        <button onclick="nextStep(3)">Não existe outra opção</button>
+    </div>
+
+    <div class="container hidden" id="step3">
+        <img src="foto1.png" class="foto-amor">
+        <h3>O quanto você me ama?</h3>
+        <div class="progress-container"><div id="progressFill"></div></div>
+        <p id="loveText" style="font-weight: bold; color: #ff4d6d;">0%</p>
+        <button id="btnClickLove" onclick="increaseLove()">Carregar amor 💖</button>
+        <button id="btnLoveNext" class="hidden" onclick="nextStep(4)">Continuar ✨</button>
+    </div>
+
+    <div class="container hidden" id="step4">
+        <p>Não queria dar spoiler do seu presente, mas...</p>
+        <button onclick="nextStep(5)" style="border-radius: 50%; width: 60px; height: 60px;">→</button>
+    </div>
+
+    <div class="container hidden" id="step5">
+        <p>✨ Raspe para descobrir ✨</p>
+        <div style="position:relative; width: 300px; height: 300px; margin: 0 auto;">
+            <img src="foto2.png" style="width: 300px; height: 300px; object-fit: cover; border-radius: 20px;">
+            <canvas id="canvas" width="300" height="300" style="position:absolute; top:0; left:0; border-radius: 20px; cursor: crosshair;"></canvas>
+        </div>
+        <button id="btnPosRaspa" class="hidden" onclick="nextStep(6)">Próximo 🌹</button>
+    </div>
+
+    <div class="container hidden" id="step6">
+        <p>O único lugar que eu me sinto seguro e confortável é...</p>
+        <div id="slots" style="font-size: 24px; font-weight: bold; margin: 20px 0;">_ _ _   _ _ _ _</div>
+        <div id="letters-container"></div>
+        <button id="btnFinalGame" class="hidden" onclick="nextStep(7)">Continuar ❤️</button>
+    </div>
+
+    <div class="container hidden" id="step7">
+        <h3>Nosso jantar assim que a gente voltar... 🍕</h3>
+        <div class="wheel-outer">
+            <div class="pointer"></div>
+            <canvas id="wheel" width="500" height="500"></canvas>
+        </div>
+        <button id="btnSpin" onclick="spinWheel()">Girar 🎡</button>
+        <div id="resultJantar" style="margin-top: 15px; font-size: 1.2rem; font-weight: bold;"></div>
+        <button id="btnGoFinal" class="hidden" onclick="nextStep(8)">Avançar ✨</button>
+    </div>
+
+    <div class="container hidden" id="step8">
+        <h2>Me perdoa? 🥺🌷</h2>
+        <button onclick="finalizarComSucesso()">Sim! ❤️</button>
+        <button id="btnNao" onmouseover="foge(this)" style="background: #ccc;">Não ❌</button>
+    </div>
+
+    <div class="container hidden" id="step9">
+        <h2>Que alegria! 🥰</h2>
+        <img src="gif_final.gif" class="gif-final">
+        <div id="finalMessage">
+            <b>Minha querida Emanuella,</b><br><br>
+            Fico muito feliz que tenha chegado até aqui. Saiba que cada detalhe dessa surpresa foi pensado para te mostrar o quanto você é essencial na minha vida.<br><br>
+            Com todo meu amor,<br><b>José Osterno</b>
+        </div>
+        <button onclick="alert('Te amo!')">Encerrar ❤️</button>
+    </div>
+
+    <script>
+        function createHearts() {
+            const bg = document.getElementById('hearts-bg');
+            for(let i=0; i<15; i++) {
+                let h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '❤️';
+                h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                h.style.animationDelay = (Math.random() * 10) + 's'; bg.appendChild(h);
+            }
+        }
+        createHearts();
+
+        function nextStep(step) {
+            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+            document.getElementById('step' + step).classList.remove('hidden');
+            if(step === 5) initScratch();
+            if(step === 6) initWordGame();
+            if(step === 7) drawWheel();
+        }
+
+        function finalizarComSucesso() {
+            document.getElementById('musica').play();
+            nextStep(9);
+        }
+
+        let loveLevel = 0;
+        function increaseLove() {
+            loveLevel += 10; if(loveLevel > 100) loveLevel = 100;
+            document.getElementById('progressFill').style.width = loveLevel + "%";
+            document.getElementById('loveText').innerText = loveLevel + "%";
+            if (loveLevel >= 100) { document.getElementById('btnClickLove').style.display = 'none'; document.getElementById('btnLoveNext').classList.remove('hidden'); }
+        }
+
+        function initScratch() {
+            const canvas = document.getElementById('canvas'); const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffc1cc'; ctx.fillRect(0,0,300,300);
+            let draw = false;
+            const scratch = (e) => {
+                if(!draw) return; const r = canvas.getBoundingClientRect();
+                const x = (e.clientX || (e.touches ? e.touches[0].clientX : 0)) - r.left;
+                const y = (e.clientY || (e.touches ? e.touches[0].clientY : 0)) - r.top;
+                ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(x,y,25,0,Math.PI*2); ctx.fill();
+                document.getElementById('btnPosRaspa').classList.remove('hidden');
+            };
+            canvas.onmousedown = () => draw = true; canvas.onmouseup = () => draw = false;
+            canvas.onmousemove = scratch; canvas.ontouchmove = scratch; canvas.ontouchstart = () => draw = true;
+        }
+
+        const targetWord = "COMVOCE"; let currentTyped = "";
+        function initWordGame() {
+            const container = document.getElementById('letters-container');
+            const letters = ["M", "V", "O", "C", "O", "Ê", "C"];
+            container.innerHTML = ""; currentTyped = ""; updateSlots();
+            letters.forEach((l, i) => {
+                const btn = document.createElement('div'); btn.className = 'letter-btn'; btn.innerText = l;
+                btn.onclick = () => {
+                    if(targetWord[currentTyped.length] === l.replace('Ê','E')) {
+                        currentTyped += l; btn.style.visibility = "hidden"; updateSlots();
+                    } else { alert("Tente de novo! ❤️"); initWordGame(); }
+                };
+                container.appendChild(btn);
+            });
+        }
+        function updateSlots() {
+            let display = ""; for(let i=0; i<3; i++) display += (currentTyped[i] || "_") + " ";
+            display += "  "; for(let i=3; i<7; i++) display += (currentTyped[i] || "_") + " ";
+            document.getElementById('slots').innerText = display;
+            if(currentTyped.length === 7) document.getElementById('btnFinalGame').classList.remove('hidden');
+        }
+
+        const options = ["Sushi 🍣", "Pizza 🍕", "Burguer 🍔", "Massa 🍝", "Açaí 🍨"];
+        const colors = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#ffc6ff"];
+        let currentRotation = 0;
+        function drawWheel() {
+            const canvas = document.getElementById('wheel'); const ctx = canvas.getContext('2d');
+            const slice = (2 * Math.PI) / options.length;
+            ctx.clearRect(0,0,500,500);
+            for(let i=0; i<options.length; i++){
+                ctx.fillStyle = colors[i]; ctx.beginPath(); ctx.moveTo(250,250); ctx.arc(250,250,250, i*slice, (i+1)*slice); ctx.fill();
+                ctx.fillStyle = "#5c2d3a"; ctx.font = "bold 30px Arial"; ctx.save(); ctx.translate(250,250); ctx.rotate(i*slice + slice/2);
+                ctx.fillText(options[i], 120, 10); ctx.restore();
+            }
+        }
+        function spinWheel() {
+            const wheel = document.getElementById('wheel'); currentRotation += 3600 + Math.floor(Math.random() * 360);
+            wheel.style.transform = `rotate(${currentRotation}deg)`; document.getElementById('btnSpin').disabled = true;
+            setTimeout(() => {
+                const actual = currentRotation % 360; const slice = 360 / options.length;
+                const winIdx = Math.floor(((360 - actual % 360) + 270) % 360 / slice);
+                document.getElementById('resultJantar').innerHTML = "🌸 Venceu: " + options[winIdx];
+                document.getElementById('btnGoFinal').classList.remove('hidden');
+            }, 4000);
+        }
+
+        function foge(btn) { btn.style.position = 'absolute'; btn.style.top = Math.random() * 80 + '%'; btn.style.left = Math.random() * 80 + '%'; }
+    </script>
+</body>
+</html>
