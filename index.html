@@ -18,12 +18,32 @@
 
         button { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); color: white; border: none; padding: 14px 28px; border-radius: 25px; cursor: pointer; font-size: 16px; margin: 10px; font-weight: bold; transition: 0.3s; }
         
-        .foto-amor, .gif-final { width: 100%; max-width: 250px; border-radius: 20px; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        /* Animação do botão de carregar amor */
+        .btn-pulse { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 77, 109, 0.4); } 100% { transform: scale(1); } }
 
-        .progress-container { width: 100%; background: #fce4ec; border-radius: 20px; height: 25px; margin: 20px 0; overflow: hidden; border: 1px solid #f8bbd0; }
-        #progressFill { width: 0%; height: 100%; background: linear-gradient(90deg, #ff4d6d, #ff8fa3); transition: width 0.4s ease; }
+        .foto-amor, .gif-final, .gif-vitoria { width: 100%; max-width: 250px; border-radius: 20px; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 15px; }
+
+        /* Barra de Amor Melhorada */
+        .progress-container { width: 100%; background: #fce4ec; border-radius: 20px; height: 30px; margin: 20px 0; overflow: hidden; border: 2px solid #f8bbd0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+        #progressFill { 
+            width: 0%; height: 100%; 
+            background: linear-gradient(90deg, #ff4d6d, #ff8fa3, #ff4d6d); 
+            background-size: 200% 100%;
+            animation: moveGradient 2s linear infinite;
+            transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.5);
+        }
+        @keyframes moveGradient { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+
+        /* Coração flutuante ao clicar */
+        .floating-heart { position: absolute; pointer-events: none; animation: floatUp 1s ease-out forwards; font-size: 20px; z-index: 100; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(2); opacity: 0; } }
 
         .letter-btn { background: #fff; color: var(--cor-secundaria); border: 2px solid var(--cor-primaria); padding: 10px 15px; border-radius: 12px; cursor: pointer; display: inline-block; margin: 5px; }
+
+        #gameArea { position: relative; width: 100%; height: 250px; background: #fff; border-radius: 15px; border: 2px dashed var(--cor-primaria); overflow: hidden; margin: 15px 0; }
+        .find-item { position: absolute; font-size: 24px; cursor: pointer; user-select: none; transition: 0.2s; }
 
         .wheel-outer { position: relative; width: 260px; height: 260px; margin: 20px auto; }
         #wheel { width: 100%; height: 100%; border-radius: 50%; border: 6px solid white; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); }
@@ -32,13 +52,12 @@
         #finalMessage { text-align: left; margin: 15px 0; padding: 15px; background: #ffe4e9; border-radius: 15px; font-size: 0.95em; color: var(--cor-texto); border: 1px solid var(--cor-primaria); line-height: 1.6; }
     </style>
 </head>
-<body>
+<body onclick="iniciarMusicaInicio()">
 
     <div class="hearts-bg" id="hearts-bg"></div>
 
-    <audio id="musica">
-        <source src="musica_fundo.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="musicaInicio" loop><source src="musica_inicio.mp3" type="audio/mpeg"></audio>
+    <audio id="musicaFinal"><source src="musica_fundo.mp3" type="audio/mpeg"></audio>
 
     <div class="container" id="step1">
         <span>🌸 ✨ 🌸</span>
@@ -57,8 +76,8 @@
         <img src="foto1.png" class="foto-amor">
         <h3>O quanto você me ama?</h3>
         <div class="progress-container"><div id="progressFill"></div></div>
-        <p id="loveText" style="font-weight: bold; color: #ff4d6d;">0%</p>
-        <button id="btnClickLove" onclick="increaseLove()">Carregar amor 💖</button>
+        <p id="loveText" style="font-weight: bold; color: #ff4d6d; font-size: 1.5rem;">0%</p>
+        <button id="btnClickLove" class="btn-pulse" onclick="increaseLove(event)">Carregar amor 💖</button>
         <button id="btnLoveNext" class="hidden" onclick="nextStep(4)">Continuar ✨</button>
     </div>
 
@@ -79,11 +98,20 @@
     <div class="container hidden" id="step6">
         <p>O único lugar que eu me sinto seguro e confortável é...</p>
         <div id="slots" style="font-size: 24px; font-weight: bold; margin: 20px 0;">_ _ _   _ _ _ _</div>
+        <img src="gif_jogo.gif" id="gifVitoriaJogo" class="gif-vitoria hidden">
         <div id="letters-container"></div>
         <button id="btnFinalGame" class="hidden" onclick="nextStep(7)">Continuar ❤️</button>
     </div>
 
     <div class="container hidden" id="step7">
+        <h3>Onde está a Emanuella? 🕵️‍♀️</h3>
+        <p>Encontre a única "mulherzinha" no meio de tantos "Joses"!</p>
+        <div id="gameArea"></div>
+        <p id="msgFind" class="hidden" style="font-weight: bold; color: var(--cor-secundaria); font-size: 1.2rem;">achou a Munu ❤️</p>
+        <button id="btnAfterFind" class="hidden" onclick="nextStep(8)">Continuar ✨</button>
+    </div>
+
+    <div class="container hidden" id="step8">
         <h3>Nosso jantar... 🍕</h3>
         <div class="wheel-outer">
             <div class="pointer"></div>
@@ -91,144 +119,130 @@
         </div>
         <button id="btnSpin" onclick="spinWheel()">Girar 🎡</button>
         <div id="resultJantar" style="margin-top: 15px; font-size: 1.2rem; font-weight: bold;"></div>
-        <button id="btnGoFinal" class="hidden" onclick="nextStep(8)">Avançar ✨</button>
+        <button id="btnGoFinal" class="hidden" onclick="nextStep(9)">Avançar ✨</button>
     </div>
 
-    <div class="container hidden" id="step8">
+    <div class="container hidden" id="step9">
         <h2>Me perdoa? 🥺🌷</h2>
         <button onclick="finalizarComSucesso()">Sim! ❤️</button>
         <button id="btnNao" onmouseover="foge(this)" style="background: #ccc;">Não ❌</button>
     </div>
 
-    <div class="container hidden" id="step9">
+    <div class="container hidden" id="step10">
         <h2>Que alegria! 🥰</h2>
         <img src="gif_final.gif" class="gif-final">
         <div id="finalMessage">
             Bom tem 83,56% de você não me ajuda quando eu pergunta, mas se caso sim. Muito obrigado Munu, te amo muito!!!🤍<br><br>
-
             Se caso não, tudo bem, eu te entendo. O meu amor está nisso, mesmo com discordâncias eu olho para você e vejo o futuro da melhor forma.<br><br>
-
             Obrigado por se tornar meu porto seguro, o mais difícil desse tempo é não poder contar as coisas para você e ter que guardar para mim.<br><br>
-
             Ser meu porto seguro onde eu me sinto confiável e não preciso em alerta a todo momento, é o melhor presente que você já me deu.<br><br>
-
             Mas apesar de tudo, meu amor por você não diminui, você é a melhor coisa que chegou em minha vida, amo seu jeitinho até quando você é lerdinha, embora isso atrapalhe um pouco kkkkk.<br><br>
-
             Amo comprar algo para você e ter o sentimento de estar alimentando uma parte de sua infância, onde as coisas eram difíceis, imaginar você pequena era meu incentivo para te perdoar, eu pensava: "é a primeira vez dela no mundo também, ela pode errar", não conseguia ser durão com você por muito tempo.<br><br>
-
             Às vezes eu tentava te dar uma lição, mas eu não aguentava te ver triste, e no final terminava com você ganhado um pedido de mim sem precisar resolver o problema.<br><br>
-
             Se tem uma coisa que eu amo nesse mundo vai ser sua presença, sua atenção. Um simples gesto vindo de você se tornar algo incrível para mim, tenho orgulho de poder falar que vc é minha mulher.<br><br>
-
             Como a vida depende da água, eu dependo do seu sorriso, sua energia contagiante. Aliás, não há nada mais agradável que passar um tempo com minha baixinha.<br><br>
-
             Mesmo com momentos tristes, haverá momentos felizes, a vida é cheia de altos e baixos. Te amo muito meu amor, um dia te trarei a felicidade de uma forma que você nunca esquecerá. Beijosssss 🤍🤍🤍🤍🤍🤍🤍🤍🤍🤍🤍<br><br>
-            
             <b>Com amor, José Osterno</b>
         </div>
         <button onclick="alert('Te amo para sempre!')">Encerrar com amor ❤️</button>
     </div>
 
     <script>
-        function createHearts() {
-            const bg = document.getElementById('hearts-bg');
-            for(let i=0; i<15; i++) {
-                let h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '❤️';
-                h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                h.style.animationDelay = (Math.random() * 10) + 's'; bg.appendChild(h);
-            }
-        }
+        let musicaInicioTocando = false;
+        function iniciarMusicaInicio() { if (!musicaInicioTocando) { document.getElementById('musicaInicio').play().catch(e => {}); musicaInicioTocando = true; } }
+        
+        function createHearts() { const bg = document.getElementById('hearts-bg'); for(let i=0; i<15; i++) { let h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '❤️'; h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 20 + 10) + 'px'; h.style.animationDelay = (Math.random() * 10) + 's'; bg.appendChild(h); } }
         createHearts();
 
         function nextStep(step) {
+            iniciarMusicaInicio();
             document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
             document.getElementById('step' + step).classList.remove('hidden');
             if(step === 5) initScratch();
             if(step === 6) initWordGame();
-            if(step === 7) drawWheel();
+            if(step === 7) initFindGame();
+            if(step === 8) drawWheel();
         }
 
         function finalizarComSucesso() {
-            document.getElementById('musica').play();
-            nextStep(9);
+            document.getElementById('musicaInicio').pause();
+            document.getElementById('musicaFinal').play();
+            nextStep(10);
         }
 
+        /* Lógica da Barra de Amor com animação extra */
         let loveLevel = 0;
-        function increaseLove() {
-            loveLevel += 10; if(loveLevel > 100) loveLevel = 100;
+        function increaseLove(event) {
+            if(loveLevel >= 100) return;
+            
+            loveLevel += 10;
+            if(loveLevel > 100) loveLevel = 100;
+            
             document.getElementById('progressFill').style.width = loveLevel + "%";
             document.getElementById('loveText').innerText = loveLevel + "%";
-            if (loveLevel >= 100) { document.getElementById('btnClickLove').style.display = 'none'; document.getElementById('btnLoveNext').classList.remove('hidden'); }
-        }
+            
+            // Cria coração flutuante no clique
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = (event.clientX - 10) + 'px';
+            heart.style.top = (event.clientY - 10) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1000);
 
-        function initScratch() {
-            const canvas = document.getElementById('canvas'); const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#ffc1cc'; ctx.fillRect(0,0,300,300);
-            let draw = false;
-            const scratch = (e) => {
-                if(!draw) return; const r = canvas.getBoundingClientRect();
-                const x = (e.clientX || (e.touches ? e.touches[0].clientX : 0)) - r.left;
-                const y = (e.clientY || (e.touches ? e.touches[0].clientY : 0)) - r.top;
-                ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(x,y,25,0,Math.PI*2); ctx.fill();
-                document.getElementById('btnPosRaspa').classList.remove('hidden');
-            };
-            canvas.onmousedown = () => draw = true; canvas.onmouseup = () => draw = false;
-            canvas.onmousemove = scratch; canvas.ontouchmove = scratch; canvas.ontouchstart = () => draw = true;
-        }
-
-        const targetWord = "COMVOCE"; let currentTyped = "";
-        function initWordGame() {
-            const container = document.getElementById('letters-container');
-            const letters = ["C", "O", "M", "V", "O", "C", "Ê"];
-            container.innerHTML = ""; currentTyped = ""; updateSlots();
-            letters.sort(() => Math.random() - 0.5);
-            letters.forEach((l) => {
-                const btn = document.createElement('div'); btn.className = 'letter-btn'; btn.innerText = l;
-                btn.onclick = () => {
-                    let letraLimpa = l.replace('Ê','E');
-                    if(targetWord[currentTyped.length] === letraLimpa) {
-                        currentTyped += letraLimpa; btn.style.visibility = "hidden"; updateSlots();
-                    } else { alert("Quase! Siga a ordem: C-O-M-V-O-C-Ê ❤️"); initWordGame(); }
-                };
-                container.appendChild(btn);
-            });
-        }
-        function updateSlots() {
-            let display = ""; 
-            for(let i=0; i<3; i++) display += (currentTyped[i] || "_") + " ";
-            display += "  "; 
-            for(let i=3; i<7; i++) {
-                let char = currentTyped[i];
-                if(i === 6 && char === "E") char = "Ê";
-                display += (char || "_") + " ";
+            if (loveLevel >= 100) { 
+                document.getElementById('btnClickLove').style.display = 'none'; 
+                document.getElementById('btnLoveNext').classList.remove('hidden'); 
             }
-            document.getElementById('slots').innerText = display;
-            if(currentTyped.length === 7) document.getElementById('btnFinalGame').classList.remove('hidden');
         }
 
-        const options = ["Sushi 🍣", "Pizza 🍕", "Burguer 🍔", "Massa 🍝", "Açaí 🍨", "Japonesa 🍱"];
+        function initFindGame() {
+            const area = document.getElementById('gameArea'); area.innerHTML = "";
+            for(let i=0; i<40; i++) {
+                const jose = document.createElement('div'); jose.className = 'find-item'; jose.innerHTML = "👨‍💼";
+                jose.style.left = Math.random() * 90 + "%"; jose.style.top = Math.random() * 85 + "%"; area.appendChild(jose);
+            }
+            const manu = document.createElement('div'); manu.className = 'find-item'; manu.innerHTML = "👩‍💼";
+            manu.style.left = Math.random() * 90 + "%"; manu.style.top = Math.random() * 85 + "%"; manu.style.zIndex = "10";
+            manu.onclick = function() {
+                this.innerHTML = "👰‍♀️"; this.style.fontSize = "40px";
+                document.getElementById('msgFind').classList.remove('hidden');
+                document.getElementById('btnAfterFind').classList.remove('hidden');
+            };
+            area.appendChild(manu);
+        }
+
+        function initScratch() { const canvas = document.getElementById('canvas'); const ctx = canvas.getContext('2d'); ctx.fillStyle = '#ffc1cc'; ctx.fillRect(0,0,300,300); let draw = false; const scratch = (e) => { if(!draw) return; const r = canvas.getBoundingClientRect(); const x = (e.clientX || (e.touches ? e.touches[0].clientX : 0)) - r.left; const y = (e.clientY || (e.touches ? e.touches[0].clientY : 0)) - r.top; ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(x,y,25,0,Math.PI*2); ctx.fill(); document.getElementById('btnPosRaspa').classList.remove('hidden'); }; canvas.onmousedown = () => draw = true; canvas.onmouseup = () => draw = false; canvas.onmousemove = scratch; canvas.ontouchmove = scratch; canvas.ontouchstart = () => draw = true; }
+        
+        const targetWord = "COMVOCE"; let currentTyped = "";
+        function initWordGame() { 
+            const container = document.getElementById('letters-container'); 
+            const letters = ["C", "O", "M", "V", "O", "C", "Ê"]; 
+            container.innerHTML = ""; currentTyped = ""; updateSlots(); 
+            document.getElementById('gifVitoriaJogo').classList.add('hidden'); 
+            letters.sort(() => Math.random() - 0.5); 
+            letters.forEach((l) => { 
+                const btn = document.createElement('div'); btn.className = 'letter-btn'; btn.innerText = l; 
+                btn.onclick = () => { 
+                    let letraLimpa = l.replace('Ê','E'); 
+                    if(targetWord[currentTyped.length] === letraLimpa) { 
+                        currentTyped += letraLimpa; btn.style.visibility = "hidden"; updateSlots(); 
+                    } else { 
+                        initWordGame();
+                    } 
+                }; 
+                container.appendChild(btn); 
+            }); 
+        }
+        
+        function updateSlots() { let display = ""; for(let i=0; i<3; i++) display += (currentTyped[i] || "_") + " "; display += "  "; for(let i=3; i<7; i++) { let char = currentTyped[i]; if(i === 6 && char === "E") char = "Ê"; display += (char || "_") + " "; } document.getElementById('slots').innerText = display; if(currentTyped.length === 7) { document.getElementById('btnFinalGame').classList.remove('hidden'); document.getElementById('gifVitoriaJogo').classList.remove('hidden'); } }
+        
+        const options = ["Sushi 🍣", "Pizza 🍕", "Burguer 🍔", "Massa 🍝", "Açaí 🍨"];
         const colors = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#ffc6ff"];
         let currentRotation = 0;
-        function drawWheel() {
-            const canvas = document.getElementById('wheel'); const ctx = canvas.getContext('2d');
-            const slice = (2 * Math.PI) / options.length;
-            ctx.clearRect(0,0,500,500);
-            for(let i=0; i<options.length; i++){
-                ctx.fillStyle = colors[i]; ctx.beginPath(); ctx.moveTo(250,250); ctx.arc(250,250,250, i*slice, (i+1)*slice); ctx.fill();
-                ctx.fillStyle = "#5c2d3a"; ctx.font = "bold 30px Arial"; ctx.save(); ctx.translate(250,250); ctx.rotate(i*slice + slice/2);
-                ctx.fillText(options[i], 120, 10); ctx.restore();
-            }
-        }
-        function spinWheel() {
-            const wheel = document.getElementById('wheel'); currentRotation += 3600 + Math.floor(Math.random() * 360);
-            wheel.style.transform = `rotate(${currentRotation}deg)`; document.getElementById('btnSpin').disabled = true;
-            setTimeout(() => {
-                const actual = currentRotation % 360; const slice = 360 / options.length;
-                const winIdx = Math.floor(((360 - actual % 360) + 270) % 360 / slice);
-                document.getElementById('resultJantar').innerHTML = "🌸 Venceu: " + options[winIdx];
-                document.getElementById('btnGoFinal').classList.remove('hidden');
-            }, 4000);
-        }
+        function drawWheel() { const canvas = document.getElementById('wheel'); const ctx = canvas.getContext('2d'); const slice = (2 * Math.PI) / options.length; ctx.clearRect(0,0,500,500); for(let i=0; i<options.length; i++){ ctx.fillStyle = colors[i]; ctx.beginPath(); ctx.moveTo(250,250); ctx.arc(250,250,250, i*slice, (i+1)*slice); ctx.fill(); ctx.fillStyle = "#5c2d3a"; ctx.font = "bold 30px Arial"; ctx.save(); ctx.translate(250,250); ctx.rotate(i*slice + slice/2); ctx.fillText(options[i], 120, 10); ctx.restore(); } }
+        function spinWheel() { const wheel = document.getElementById('wheel'); currentRotation += 3600 + Math.floor(Math.random() * 360); wheel.style.transform = `rotate(${currentRotation}deg)`; document.getElementById('btnSpin').disabled = true; setTimeout(() => { const actual = currentRotation % 360; const slice = 360 / options.length; const winIdx = Math.floor(((360 - actual % 360) + 270) % 360 / slice); document.getElementById('resultJantar').innerHTML = "🌸 Venceu: " + options[winIdx]; document.getElementById('btnGoFinal').classList.remove('hidden'); }, 4000); }
+        
         function foge(btn) { btn.style.position = 'absolute'; btn.style.top = Math.random() * 80 + '%'; btn.style.left = Math.random() * 80 + '%'; }
     </script>
 </body>
