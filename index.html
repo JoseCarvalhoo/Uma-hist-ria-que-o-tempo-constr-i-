@@ -84,7 +84,7 @@
     </div>
 
     <div class="container hidden" id="step7">
-        <h3>Nosso jantar assim que a gente voltar... 🍕</h3>
+        <h3>Nosso jantar... 🍕</h3>
         <div class="wheel-outer">
             <div class="pointer"></div>
             <canvas id="wheel" width="500" height="500"></canvas>
@@ -104,30 +104,29 @@
         <h2>Que alegria! 🥰</h2>
         <img src="gif_final.gif" class="gif-final">
         <div id="finalMessage">
-            <b>Minha querida Emanuella,</b><br><br>
-            Fico muito feliz que tenha chegado até aqui. Saiba que cada detalhe dessa surpresa foi pensado para te mostrar o quanto você é essencial na minha vida.<br><br>
-              Bom tem 83,56% de você não me ajuda quando eu pergunta, mas se caso sim. Muito obrigado Munu, te amo muito!!!🤍<br>
+            Bom tem 83,56% de você não me ajuda quando eu pergunta, mas se caso sim. Muito obrigado Munu, te amo muito!!!🤍<br><br>
 
-Se caso não, tudo bem, eu te entendo. O meu amor está nisso, mesmo com discordâncias eu olho para você e vejo o futuro da melhor forma.<br>
+            Se caso não, tudo bem, eu te entendo. O meu amor está nisso, mesmo com discordâncias eu olho para você e vejo o futuro da melhor forma.<br><br>
 
-Obrigado por se tornar meu porto seguro, o mais difícil desse tempo é não poder contar as coisas para você e ter que guardar para mim.<br>
+            Obrigado por se tornar meu porto seguro, o mais difícil desse tempo é não poder contar as coisas para você e ter que guardar para mim.<br><br>
 
-Ser meu porto seguro onde eu me sinto confiável e não preciso em alerta a todo momento, é o melhor presente que você já me deu.<br>
+            Ser meu porto seguro onde eu me sinto confiável e não preciso em alerta a todo momento, é o melhor presente que você já me deu.<br><br>
 
-Mas apesar de tudo, meu amor por você não diminui, você é a melhor coisa que chegou em minha vida, amo seu jeitinho até quando você é lerdinha, embora isso atrapalhe um pouco kkkkk.<br>
+            Mas apesar de tudo, meu amor por você não diminui, você é a melhor coisa que chegou em minha vida, amo seu jeitinho até quando você é lerdinha, embora isso atrapalhe um pouco kkkkk.<br><br>
 
-Amo comprar algo para você e ter o sentimento de estar alimentando uma parte de sua infância, onde as coisas eram difíceis, imaginar você pequena era meu incentivo para te perdoar, eu pensava: "é a primeira vez dela no mundo também, ela pode errar", não conseguia ser durão com você por muito tempo.<br>
+            Amo comprar algo para você e ter o sentimento de estar alimentando uma parte de sua infância, onde as coisas eram difíceis, imaginar você pequena era meu incentivo para te perdoar, eu pensava: "é a primeira vez dela no mundo também, ela pode errar", não conseguia ser durão com você por muito tempo.<br><br>
 
-Às vezes eu tentava te dar uma lição, mas eu não aguentava te ver triste, e no final terminava com você ganhado um pedido de mim sem precisar resolver o problema. <br>
+            Às vezes eu tentava te dar uma lição, mas eu não aguentava te ver triste, e no final terminava com você ganhado um pedido de mim sem precisar resolver o problema.<br><br>
 
-Se tem uma coisa que eu amo nesse mundo vai ser sua presença, sua atenção. Um simples gesto vindo de você se tornar algo incrível para mim, tenho orgulho de poder falar que vc é minha mulher.<br>
+            Se tem uma coisa que eu amo nesse mundo vai ser sua presença, sua atenção. Um simples gesto vindo de você se tornar algo incrível para mim, tenho orgulho de poder falar que vc é minha mulher.<br><br>
 
-Como a vida depende da água, eu dependo do seu sorriso, sua energia contagiante. Aliás, não há nada mais agradável que passar um tempo com minha baixinha.<br>
+            Como a vida depende da água, eu dependo do seu sorriso, sua energia contagiante. Aliás, não há nada mais agradável que passar um tempo com minha baixinha.<br><br>
 
-Mesmo com momentos tristes, haverá momentos felizes, a vida é cheia de altos e baixos. Te amo muito meu amor, um dia te trarei a felicidade de uma forma que você nunca esquecerá. Beijosssss 🤍🤍🤍🤍🤍🤍🤍🤍🤍🤍🤍<br>
-            Com todo meu amor,<br><b>José Osterno</b>
+            Mesmo com momentos tristes, haverá momentos felizes, a vida é cheia de altos e baixos. Te amo muito meu amor, um dia te trarei a felicidade de uma forma que você nunca esquecerá. Beijosssss 🤍🤍🤍🤍🤍🤍🤍🤍🤍🤍🤍<br><br>
+            
+            <b>Com amor, José Osterno</b>
         </div>
-        <button onclick="alert('Te amo!')">Encerrar ❤️</button>
+        <button onclick="alert('Te amo para sempre!')">Encerrar com amor ❤️</button>
     </div>
 
     <script>
@@ -180,26 +179,34 @@ Mesmo com momentos tristes, haverá momentos felizes, a vida é cheia de altos e
         const targetWord = "COMVOCE"; let currentTyped = "";
         function initWordGame() {
             const container = document.getElementById('letters-container');
-            const letters = ["M", "V", "O", "C", "O", "Ê", "C"];
+            const letters = ["C", "O", "M", "V", "O", "C", "Ê"];
             container.innerHTML = ""; currentTyped = ""; updateSlots();
-            letters.forEach((l, i) => {
+            letters.sort(() => Math.random() - 0.5);
+            letters.forEach((l) => {
                 const btn = document.createElement('div'); btn.className = 'letter-btn'; btn.innerText = l;
                 btn.onclick = () => {
-                    if(targetWord[currentTyped.length] === l.replace('Ê','E')) {
-                        currentTyped += l; btn.style.visibility = "hidden"; updateSlots();
-                    } else { alert("Tente de novo! ❤️"); initWordGame(); }
+                    let letraLimpa = l.replace('Ê','E');
+                    if(targetWord[currentTyped.length] === letraLimpa) {
+                        currentTyped += letraLimpa; btn.style.visibility = "hidden"; updateSlots();
+                    } else { alert("Quase! Siga a ordem: C-O-M-V-O-C-Ê ❤️"); initWordGame(); }
                 };
                 container.appendChild(btn);
             });
         }
         function updateSlots() {
-            let display = ""; for(let i=0; i<3; i++) display += (currentTyped[i] || "_") + " ";
-            display += "  "; for(let i=3; i<7; i++) display += (currentTyped[i] || "_") + " ";
+            let display = ""; 
+            for(let i=0; i<3; i++) display += (currentTyped[i] || "_") + " ";
+            display += "  "; 
+            for(let i=3; i<7; i++) {
+                let char = currentTyped[i];
+                if(i === 6 && char === "E") char = "Ê";
+                display += (char || "_") + " ";
+            }
             document.getElementById('slots').innerText = display;
             if(currentTyped.length === 7) document.getElementById('btnFinalGame').classList.remove('hidden');
         }
 
-        const options = ["Sushi 🍣", "Pizza 🍕", "Burguer 🍔", "Massa 🍝", "Açaí 🍨"];
+        const options = ["Sushi 🍣", "Pizza 🍕", "Burguer 🍔", "Massa 🍝", "Açaí 🍨", "Japonesa 🍱"];
         const colors = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#ffc6ff"];
         let currentRotation = 0;
         function drawWheel() {
@@ -222,7 +229,6 @@ Mesmo com momentos tristes, haverá momentos felizes, a vida é cheia de altos e
                 document.getElementById('btnGoFinal').classList.remove('hidden');
             }, 4000);
         }
-
         function foge(btn) { btn.style.position = 'absolute'; btn.style.top = Math.random() * 80 + '%'; btn.style.left = Math.random() * 80 + '%'; }
     </script>
 </body>
