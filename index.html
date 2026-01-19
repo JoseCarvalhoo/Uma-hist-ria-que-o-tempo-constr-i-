@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Aviso Espacial</title>
+    <style>
+        /* Fundo preto com efeito de estrelas */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            /* Cria pequenos pontos brancos que parecem estrelas */
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            font-family: Arial, sans-serif;
+        }
+
+        /* O retângulo "em pé" (vertical) */
+        .aviso-container {
+            width: 300px; /* Largura fixa para ficar em pé */
+            min-height: 450px; /* Altura maior que a largura */
+            background: rgba(0, 0, 0, 0.8); /* Fundo preto levemente transparente */
+            border: 2px solid #white; /* Borda azul neon */
+            box-shadow: 0 0 20px #999; /* Brilho neon externo */
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #9999;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aviso-container">
+        <h1>Aviso</h1>
+        <p>
+            Oi Amor,<br>
+            Se você estiver vendo essa msg agora porque eu pedi, é um sinal que tudo deu certo e eu estou bem. Se caso não, sinto muito, você talvez verá essa msg um dia, mas se tudo der certo Deus irá me proteger e dar o sinal que a gente será feliz novamente
+        </p>
+        <p>
+            Mas se caso eu tive me dado mal, saiba que eu te amo. Não desisti de você, foi apenas uma tentativa para te deixar mais segura, quero te mostra que eu mudei, e eu acredito que uma intervenção divina talvez te convença. Te amo muito Manu, não me julgue por favor, mas tenho certeza que não vai acontecer nada, eu tenho que te proteger
+        </p>
+    </div>
+
+</body>
+</html>
