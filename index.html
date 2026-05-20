@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Realm of Westeros</title>
+    <style>
+        /* Estilo Geral - Clima Dark e Medieval */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d0d0d;
+            color: #f4edd9;
+            font-family: 'Cinzel', 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Container Principal para as Telas */
+        .box-container {
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #111111 100%);
+            padding: 40px;
+            border-radius: 8px;
+            border: 2px solid #b39246; 
+            box-shadow: 0px 0px 25px rgba(179, 146, 70, 0.2);
+            max-width: 500px;
+            width: 90%;
+            margin: 20px;
+            box-sizing: border-box;
+        }
+
+        h1, h2, h3 {
+            letter-spacing: 2px;
+            color: #b39246;
+            text-transform: uppercase;
+        }
+
+        h1 { font-size: 1.8rem; margin-bottom: 10px; }
+        h2 { font-size: 1.6rem; }
+
+        p {
+            font-size: 0.95rem;
+            color: #a3a3a3;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            color: #b39246;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .input-hint {
+            display: block;
+            font-size: 0.75rem;
+            color: #777;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .form-field {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            background-color: #050505;
+            border: 1px solid #555;
+            color: #fff;
+            border-radius: 4px;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        #date-input {
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .form-field:focus {
+            border-color: #b39246;
+            box-shadow: 0px 0px 10px rgba(179, 146, 70, 0.5);
+        }
+
+        .btn-action {
+            margin-top: 10px;
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            background-color: #b39246;
+            color: #0d0d0d;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .btn-action:hover {
+            background-color: #d1b46a;
+            box-shadow: 0px 0px 15px rgba(209, 180, 106, 0.6);
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            min-height: 20px;
+            font-style: italic;
+        }
+
+        .emoji-grid {
+            display: grid; 
+            grid-template-columns: repeat(10, 1fr); 
+            gap: 8px; 
+            background-color: #050505; 
+            padding: 15px; 
+            border: 1px solid #444; 
+            border-radius: 6px;
+            font-size: 1.6rem;
+            user-select: none;
+            margin-top: 15px;
+        }
+
+        .emoji-grid span {
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: inline-block;
+        }
+
+        .emoji-grid span:hover {
+            transform: scale(1.25);
+        }
+
+        .victory-box {
+            display: none; 
+            margin-top: 20px; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #152412, #111); 
+            border: 2px solid #4cd137; 
+            border-radius: 8px;
+        }
+
+        .queen-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #b39246;
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(179, 146, 70, 0.4);
+            margin: 0 auto 15px auto;
+            display: block;
+        }
+
+        .life-clock {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .clock-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .clock-number {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #b39246;
+        }
+
+        .clock-label {
+            font-size: 0.7rem;
+            color: #777;
+            text-transform: uppercase;
+        }
+
+        .love-letter {
+            text-align: justify;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #f4edd9;
+            border-top: 1px dashed #b39246;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="background-music" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="box-container" id="lock-screen">
+        <h1>Proteger o Reino</h1>
+        <p>Provedores da coroa, identifiquem-se. Insira os selos de lealdade para reivindicar o Trono de Ferro.</p>
+        
+        <div class="input-group">
+            <label for="date-input">Data Importante:</label>
+            <input type="text" id="date-input" class="form-field" placeholder="00/00/00" maxlength="8">
+            <span class="input-hint">Digite no formato: DD/MM/AA</span>
+        </div>
+
+        <div class="input-group">
+            <label for="pet-choice">Fiel Escudeiro (Animal de Estimação):</label>
+            <select id="pet-choice" class="form-field">
+                <option value="">Selecione o guardião...</option>
+                <option value="cachorro">Cachorro</option>
+                <option value="gato">Gato</option>
+                <option value="passaro">Pássaro</option>
+                <option value="peixe">Peixe</option>
+            </select>
+        </div>
+        
+        <button class="btn-action" onclick="validateAccess()">Continuar e Prosseguir</button>
+        <div id="error-txt" class="error-message"></div>
+    </div>
+
+    <div class="box-container" id="main-site" style="display: none;">
+        <h1>O Trono de Ferro é Seu!</h1>
+        <p style="color: #b39246; font-size: 1.1rem; font-weight: bold;">As portas de Westeros foram abertas.</p>
+        <p>Antes de assumir o comando de todo o reino, a guarda real preparou um teste para medir seus reflexos contra as feras selvagens.</p>
+        
+        <button class="btn-action" onclick="goToGame()">Iniciar Desafio Real</button>
+    </div>
+
+    <div class="box-container" id="game-screen" style="display: none; max-width: 550px;">
+        <h2>Desafio de Westeros</h2>
+        <p>Os dragões invadiram o castelo! Encontre a princesa 👸 escondida no meio das feras para provar sua linhagem real.</p>
+
+        <div id="emoji-grid" class="emoji-grid"></div>
+
+        <div id="victory-message" class="victory-box">
+            <h3 style="color: #4cd137; margin: 0 0 10px 0;">👑 PARABÉNS!</h3>
+            <p style="color: #f4edd9; margin-bottom: 15px;">
+                Você resgatou a princesa e provou ser a verdadeira governante dos Sete Reinos!
+            </p>
+            <button class="btn-action" onclick="proceedAfterGame()" style="background-color: #4cd137; color: #000;">
+                Avançar no Reino
+            </button>
+        </div>
+    </div>
+
+    <div class="box-container" id="final-screen" style="display: none; max-width: 600px;">
+        <h2>O Reinado de uma Rainha</h2>
+        
+        <img src="foto_dela.png" alt="Rainha de Westeros" class="queen-photo">
+        
+        <p>O tempo passa, mas sua presença torna o mundo muito mais bonito. Você já espalha sua luz e graça no mundo há exatos:</p>
+
+        <div class="life-clock">
+            <div class="clock-item"><div id="years" class="clock-number">00</div><div class="clock-label">Anos</div></div>
+            <div class="clock-item"><div id="months" class="clock-number">00</div><div class="clock-label">Meses</div></div>
+            <div class="clock-item"><div id="days" class="clock-number">00</div><div class="clock-label">Dias</div></div>
+            <div class="clock-item"><div id="hours" class="clock-number">00</div><div class="clock-label">Horas</div></div>
+            <div class="clock-item"><div id="minutes" class="clock-number">00</div><div class="clock-label">Minutos</div></div>
+            <div class="clock-item"><div id="seconds" class="clock-number">00</div><div class="clock-label">Segundos</div></div>
+        </div>
+
+        <div class="love-letter">
+            <p><strong>Minha Rainha,</strong></p>
+            <p>
+                Hoje, os Sete Reinos celebram a data em que a estrela mais brilhante surgiu no mundo. Não comemoramos apenas a passagem do tempo, mas a existência de quem trouxe luz aos meus dias. Você não apenas governa o meu coração, mas o protege com uma força que eu jamais conheci. Nossa trajetória não foi pavimentada apenas por flores, mas por batalhas que testaram nossa fé. Houve um tempo em que o mundo ao redor tentou ditar o nosso destino e nos forçou a separar, como se as muralhas fossem altas demais e as correntes fossem fortes demais para rompermos. Mas a verdade é que, quando o amor é escrito nas estrelas, nenhum decreto familiar pode apagá-lo. Eu me dedico a você com cada fibra do meu ser, porque, sendo minha primeira e única namorada, você me ensinou que o verdadeiro valor de um homem está em lutar por quem ele mais ama nesta vida.
+            </p>
+            <p>
+                Retornamos de um abismo que muitos não conseguiriam atravessar, provando nossa resistência. Estamos aqui, mais firmes e fortes do que nunca, tendo vencido as dificuldades que nos cercaram. Cada obstáculo que enfrentamos apenas serviu para forjar o aço da nossa união, tornando-a inquebrável. Não existe reino, família ou barreira que possa diminuir o que sinto quando olho em seus olhos. Você é a soberana do meu destino, a única pessoa com quem desejo compartilhar as glórias do futuro. Minha lealdade a você não é uma escolha, é a minha natureza, o juramento que fiz ao meu próprio coração. Cada desafio superado foi uma lição, e hoje celebramos não só o passado, mas o nosso presente inabalável. Sinto um orgulho imenso de quem nos tornamos, enfrentando as tempestades para proteger o nosso elo.
+            </p>
+            <p>
+                Que nestes seus 19 anos, os ventos soprem a seu favor e que a felicidade seja nossa única lei. Que os dragões voem alto sobre as nossas cabeças, iluminando o caminho que ainda construiremos. O Trono de Ferro é seu por direito, conquistado com a coragem de quem não se rendeu ao destino. Saiba que, em todas as vidas que pudessem existir, eu sempre escolheria ser o seu fiel guardião. Minha dedicação a você é absoluta, um reflexo do amor puro que encontrei logo no meu primeiro grande amor. Que a sua jornada seja longa, honrosa e cercada de tudo o que faz o seu coração pulsar mais forte. Eu estarei ao seu lado, na primeira fileira de cada batalha e no centro de cada celebração da vida.
+            </p>
+            <p style="text-align: center; color: #b39246; font-weight: bold; margin-top: 30px; font-size: 1.2rem;">
+                Feliz 19 anos, minha eterna e amada Rainha! 👑❤️
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('date-input').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, ''); 
+            if (value.length >= 2) value = value.substring(0, 2) + '/' + value.substring(2);
+            if (value.length >= 5) value = value.substring(0, 5) + '/' + value.substring(5, 7);
+            e.target.value = value;
+        });
+
+        function validateAccess() {
+            const dateInput = document.getElementById('date-input').value;
+            const petSelect = document.getElementById('pet-choice').value;
+            const errorTxt = document.getElementById('error-txt');
+
+            if (dateInput === "28/04/25" && petSelect === "gato") {
+                document.getElementById('lock-screen').style.display = "none";
+                document.getElementById('main-site').style.display = "block";
+            } else {
+                errorTxt.innerText = "Chave incorreta ou animal desconhecido. Você não tem o sangue do dragão.";
+                document.getElementById('date-input').value = ""; 
+            }
+        }
+
+        function goToGame() {
+            document.getElementById('main-site').style.display = "none";
+            document.getElementById('game-screen').style.display = "block";
+            buildDragonGrid(); 
+        }
+
+        function buildDragonGrid() {
+            const grid = document.getElementById('emoji-grid');
+            grid.innerHTML = ''; 
+            grid.style.pointerEvents = 'auto'; 
+            document.getElementById('victory-message').style.display = 'none'; 
+
+            const princessPosition = Math.floor(Math.random() * 100);
+
+            for (let i = 0; i < 100; i++) {
+                const span = document.createElement('span');
+                if (i === princessPosition) {
+                    span.innerText = '👸'; 
+                    span.onclick = function() {
+                        grid.style.pointerEvents = 'none'; 
+                        document.getElementById('victory-message').style.display = 'block';
+                    };
+                } else {
+                    span.innerText = '🐲'; 
+                    span.onclick = function() {
+                        span.style.transform = 'scale(0.8)';
+                        setTimeout(() => span.style.transform = 'scale(1)', 100);
+                    };
+                }
+                grid.appendChild(span);
+            }
+        }
+
+        function proceedAfterGame() {
+            const audio = document.getElementById('background-music');
+            audio.play();
+
+            document.getElementById('game-screen').style.display = "none";
+            document.getElementById('final-screen').style.display = "block";
+
+            startLifeClock();
+        }
+
+        function startLifeClock() {
+            const birthDate = new Date("2007-05-21T00:00:00"); 
+
+            setInterval(() => {
+                const now = new Date();
+                
+                let years = now.getFullYear() - birthDate.getFullYear();
+                let months = now.getMonth() - birthDate.getMonth();
+                let days = now.getDate() - birthDate.getDate();
+
+                if (days < 0) {
+                    months--;
+                    const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                    days += prevMonth.getDate();
+                }
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+
+                document.getElementById('years').innerText = String(years).padStart(2, '0');
+                document.getElementById('months').innerText = String(months).padStart(2, '0');
+                document.getElementById('days').innerText = String(days).padStart(2, '0');
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
